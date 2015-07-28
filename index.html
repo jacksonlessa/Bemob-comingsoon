@@ -25,7 +25,7 @@
         <p class="small_text"><strong>quanto tudo estiver pronto,</strong> voc&ecirc; será o primeiro a saber.</p>
         <div class="form">
             <div class="field_content">
-                <input class="field" type="text"  />
+                <input class="field" type="text" id="email"  />
                 <input class="submit" type="button" value="" />
 
             </div>
@@ -39,5 +39,35 @@
         </ul> -->
     </div>
 </div>
+
+
+<script>
+$( document ).ready(function() {
+    $('.submit').click(function(){
+        var email = $('#email').val();
+
+        $.ajax({
+          url: 'ajax_index.php',
+          type : 'post',
+          data : {email : email},
+          async: false,
+          dataType : 'json',
+          beforeSend: function(){
+              $('#email').val('Aguarde...');
+              $('#email').attr('disabled','disabled');
+          }
+        }).done(function(data,xmlrequest,error) {
+            $('#email').val(email);
+            $('#email').removeAttr('disabled');
+            $('.response').html(data.msg);
+
+        }).fail(function(data,xmlrequest,error){
+            console.log(error);
+        });
+    })
+});
+
+</script>
+
 </body>
 </html>
